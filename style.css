@@ -2,14 +2,48 @@
   margin:0;
   padding:0;
 }
+li {
+  list-style: none;
+}
+.icon {
+  width: 1em; height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
 body{
   overflow:hidden;
 }
 #xxx{
-  background: green;
+  background: #fff;
 }
-#eraser{
+#actions{
   position:fixed;
   top:10px;
   left: 50px;
+}
+#actions .active{
+  transition:all .3s;
+  transform: scale(1.2);
+  color: red;
+}
+
+#actions svg {
+  width:30px;
+  height:30px;
+  margin: 5px;
+  padding:6px;
+}
+
+#color{
+  position:fixed;
+  left:0;
+  top: 20%;
+}
+#container{
+  display:grid;
+  grid-template-columns: 20px 20px;
+  grid-template-rows: 20px 20px;
+ 
 }

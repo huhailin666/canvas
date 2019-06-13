@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -7,9 +8,42 @@
   <title>Document</title>
   <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
   <canvas id="xxx" width="500" height="500"></canvas>
-  <button id="eraser">橡皮擦</button>
+  <div id="actions">
+    <svg class="icon active" id="pencil" aria-hidden="true">
+      <use xlink:href="#icon-pencil"></use>
+    </svg>
+    <svg class="icon" id="pen" aria-hidden="true">
+      <use xlink:href="#icon-icon-test"></use>
+    </svg>
+    <svg class="icon" id="shuazi" aria-hidden="true">
+      <use xlink:href="#icon-shuazi"></use>
+    </svg>
+    <svg class="icon" id="eraser" aria-hidden="true">
+      <use xlink:href="#icon-xiangpica_s"></use>
+    </svg>
+    <svg class="icon" aria-hidden="true">
+      <use xlink:href="#icon-chexiao"></use>
+    </svg>
+    <svg class="icon" aria-hidden="true">
+      <use xlink:href="#icon-laji"></use>
+    </svg>
+    </svg> <svg class="icon" id="download" aria-hidden="true">
+      <use xlink:href="#icon-xiazai"></use>
+    </svg>
+  </div>
+  <div id="color">
+    <ul id="container">
+      <li id="black"></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
   <script src="./index.js"></script>
+  <script src="//at.alicdn.com/t/font_1241916_m6052im2u0j.js"></script>
 </body>
+
 </html>
