@@ -1,0 +1,15 @@
+*{
+  margin:0;
+  padding:0;
+}
+body{
+  overflow:hidden;
+}
+#xxx{
+  background: green;
+}
+#eraser{
+  position:fixed;
+  top:10px;
+  left: 50px;
+}
