@@ -1,3 +1,4 @@
+import './style.less'
 var yyy = document.getElementById('xxx');
 var ctx = yyy.getContext('2d');
 var canvasX = yyy.offsetLeft;
@@ -78,14 +79,13 @@ function touchEvent() {
   yyy.ontouchstart = function (e) {
     let x = e.touches[0].clientX - canvasX;
     let y = e.touches[0].clientY - canvasY;
-    console.log(e)
     if (useEraser) {
       eraserFlag = true;
       ctx.clearRect(x, y,lineWidth+ 10, lineWidth+10)
       return;
     }
     paintFlag = true;
-    drawCircle(x, y, "blue")
+    // drawCircle(x, y, "blue")
     startPoint = { x: x, y: y }
   }
   yyy.ontouchmove = function (e) {
@@ -117,8 +117,7 @@ function mouseEvent() {
       return;
     }
     paintFlag = true;
-
-    drawCircle(x, y, lineWidth/2, "blue")
+    // drawCircle(x, y, lineWidth/2, "blue")
     startPoint = { x: x, y: y }
   }
   yyy.onmousemove = function (e) {
