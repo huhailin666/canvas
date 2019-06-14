@@ -1,49 +1,118 @@
-*{
-  margin:0;
-  padding:0;
+* {
+  margin : 0;
+  padding: 0;
 }
+
 li {
   list-style: none;
 }
+
 .icon {
-  width: 1em; height: 1em;
+  width         : 1em;
+  height        : 1em;
   vertical-align: -0.15em;
-  fill: currentColor;
-  overflow: hidden;
+  fill          : currentColor;
+  overflow      : hidden;
 }
 
-body{
-  overflow:hidden;
-  #xxx{
-    background: green;
+body {
+  overflow: hidden;
+
+  #xxx {
+    background: #fff;
   }
-  #actions{
-    position:fixed;
-    top:10px;
-    left: 50px;
+
+  #actions {
+    position: fixed;
+    top     : 10px;
+    left    : 50px;
+
+    svg {
+      width  : 30px;
+      height : 30px;
+      margin : 5px;
+      padding: 6px;
+    }
+
+    .active {
+      transition: all .3s;
+      transform : scale(1.2);
+      color     : red;
+    }
   }
-  #actions .active{
-    transition:all .3s;
-    transform: scale(1.2);
-    color: red;
+
+  #color {
+    position: fixed;
+    left    : 10px;
+    top     : 20%;
+
+    #container {
+      display              : grid;
+      grid-template-columns: 20px 20px;
+      grid-template-rows   : repeat(6, 20px);
+      grid-gap: 20px;
+      transition           : all 0.3s;
+
+      li {
+        width        : 25px;
+        height       : 25px;
+        border-radius: 50%;
+        border       : 2px solid grey;
+        &.active{
+          transform: scale(1.2);
+          transition: all .3s;
+        }
+      }
+
+      #blue {
+        background: blue;
+      }
+
+      #red {
+        background: red;
+      }
+
+      #yellow {
+        background: yellow;
+      }
+
+      #black {
+        background: black;
+      }
+
+      #pink {
+        background: pink;
+      }
+
+      #green {
+        background: green;
+      }
+
+      #gray {
+        background: gray;
+      }
+
+      #purple {
+        background: purple;
+      }
+
+      #maroon {
+        background: maroon;
+      }
+
+      #lawngreen {
+        background: lawngreen;
+      }
+
+      #orange {
+        background: orange;
+      }
+      #aqua{
+        background: aqua;
+
+      }
+    }
   }
-  
-  #actions svg {
-    width:30px;
-    height:30px;
-    margin: 5px;
-    padding:6px;
-  }
-  
-  #color{
-    position:fixed;
-    left:0;
-    top: 20%;
-  }
-  #container{
-    display:grid;
-    grid-template-columns: 20px 20px;
-    grid-template-rows: 20px 20px;
-  }
-  
+
+
 }
