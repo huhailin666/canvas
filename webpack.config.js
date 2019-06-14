@@ -3,14 +3,14 @@ var htmlWebpackPlugin = require('html-webpack-plugin')
 
 
 module.exports = {
-  entry: path.join(__dirname, './main.js'), // 入口文件
+  entry: path.join(__dirname, './src/main.js'), // 入口文件
   output: { // 指定输出选项
     path: path.join(__dirname, './dist'), // 输出路径
     filename: 'bundle.js' // 指定输出文件的名称
   },
   plugins: [ // 所有webpack  插件的配置节点
     new htmlWebpackPlugin({
-      template: path.join(__dirname, './index.html'), // 指定模板文件路径
+      template: path.join(__dirname, './src/index.html'), // 指定模板文件路径
       filename: 'index.html' // 设置生成的内存页面的名称
     })
   ],
