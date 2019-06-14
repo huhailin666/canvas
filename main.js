@@ -10,24 +10,38 @@ var useRect = false;
 var rectFlag = false;
 var useCircle = false;
 var circleFlag=false;
-
+var useLine=false;
+var lineFlag=false;
 
 var canvasImageData = [];
 var lineWidth = 4
 var lineColor = "black"
+resize()
+canvasImageData[0]=ctx.getImageData(0, 0, yyy.width, yyy.height)
 
-canvasImageData.push(ctx.getImageData(0, 0, yyy.width, yyy.height))
+window.canvasImageData=canvasImageData
+console.log(canvasImageData)
+line.onclick=function(){
+  useLine=true;
+  useCircle = false;
+  useRect = false;
+  useEraser=false;
+}
 circle.onclick=function(){
   useCircle = true;
   useRect = false;
   useEraser=false;
+  useLine=false;
+
 }
 
 rect.onclick = function () {
   useRect = true;
   useCircle=false;
   useEraser=false;
+  useLine=false;
 }
+
 chexiao.onclick = function (e) {
   let length = canvasImageData.length;
   if (length > 1) {
@@ -40,7 +54,6 @@ chexiao.onclick = function (e) {
     canvasImageData = []
     e.target.classList.add('ban');
     canvasImageData[0]=ctx.getImageData(0, 0, yyy.width, yyy.height)
-
   }
 
 
@@ -63,6 +76,7 @@ pencil.onclick = function () {
   useEraser = false;
   useRect=false;
   useCircle=false;
+  useLine=false;
   lineWidth = 5
   pencil.classList.add('active')
   pen.classList.remove('active')
@@ -74,6 +88,7 @@ pen.onclick = function () {
   useEraser = false;
   useRect=false;
   useCircle=false;
+  useLine=false;
 
   lineWidth = 9
   pencil.classList.remove('active')
@@ -86,6 +101,7 @@ shuazi.onclick = function () {
   useEraser = false;
   useRect=false;
   useCircle=false;
+  useLine=false;
 
   lineWidth = 13
   pencil.classList.remove('active')
@@ -97,6 +113,7 @@ eraser.onclick = function () {
   useEraser = true;
   useRect=false;
   useCircle=false;
+  useLine=false;
 
   pencil.classList.remove('active')
   pen.classList.remove('active')
@@ -106,7 +123,7 @@ eraser.onclick = function () {
 
 
 
-resize()
+
 window.onresize = function () {
   resize();
 }
@@ -137,6 +154,11 @@ function mouseEvent() {
     let x = e.clientX - canvasX;
     let y = e.clientY - canvasY;
     startPoint = { x: x, y: y }
+    if(useLine){
+      lineFlag=true;
+      console.log('useLine')
+      return;
+    }
     if (useCircle) {
       circleFlag = true;
       console.log('useCircle')
@@ -158,16 +180,33 @@ function mouseEvent() {
   yyy.onmousemove = function (e) {
     let x = e.clientX - canvasX;
     let y = e.clientY - canvasY;
+    if(useLine&&lineFlag){
+      console.log('正在画直线')
+      ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
+      ctx.beginPath()
+
+      ctx.moveTo(startPoint.x,startPoint.y);
+      ctx.lineTo(x,y)
+      ctx.stroke()
+      return;
+
+    }
     if (useCircle && circleFlag) {
       let radius=  Math.sqrt(Math.pow(x-startPoint.x,2)+Math.pow(y-startPoint.y,2))
+      ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
       ctx.beginPath()
+
       ctx.arc(startPoint.x, startPoint.y,radius, 0, Math.PI*2)
-      ctx.clearRect(startPoint.x-radius-5, startPoint.y-radius-5, 2*radius+10, 2*radius+10)
+      // ctx.clearRect(startPoint.x-radius-5, startPoint.y-radius-5, 2*radius+10, 2*radius+10)
+
       ctx.stroke()
       return;
     }
     if (useRect && rectFlag) {
-      ctx.clearRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y)
+      ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
+      ctx.beginPath()
+
+      // ctx.clearRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y)
       ctx.strokeRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y)
       return;
     }
@@ -176,20 +215,33 @@ function mouseEvent() {
 
       return;
     }
-    if (!paintFlag) return;
-    drawCircle(x, y);
-    endPoint = { x: x, y: y }
-    drawLine(startPoint.x, startPoint.y, x, y);
-    startPoint = endPoint;
+    if (paintFlag) {
+      drawCircle(x, y);
+      endPoint = { x: x, y: y }
+      drawLine(startPoint.x, startPoint.y, x, y);
+      startPoint = endPoint;
+    }
+
   }
 
   yyy.onmouseup = function (e) {
+    if (useLine && lineFlag) {
+      let x = e.clientX - canvasX;
+      let y = e.clientY - canvasY;
+      console.log('完成画圆直线')
+      let length=canvasImageData.length
+      ctx.putImageData(canvasImageData[length -1], 0, 0);
+      ctx.moveTo(startPoint.x,startPoint.y);
+      ctx.lineTo(x,y);
+      ctx.stroke()
+    }
     if (useCircle && circleFlag) {
       let x = e.clientX - canvasX;
       let y = e.clientY - canvasY;
       console.log('完成画圆形')
       let radius=  Math.sqrt(Math.pow(x-startPoint.x,2)+Math.pow(y-startPoint.y,2))
       ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
+      ctx.beginPath()
       ctx.arc(startPoint.x, startPoint.y,radius, 0, Math.PI*2)
       ctx.stroke()
     }
@@ -204,6 +256,7 @@ function mouseEvent() {
     canvasImageData.push(ctx.getImageData(0, 0, yyy.width, yyy.height))
     chexiao.classList.remove('ban')
 
+    lineFlag=false;
     circleFlag=false;
     rectFlag = false;
     paintFlag = false;
