@@ -72,4 +72,14 @@ ctx.beginPath()
 ctx.arc(startPoint.x, startPoint.y, radius, 0, Math.PI * 2)
 ctx.stroke()
 ```
-
+### 6.下载的方法
+将页面图形变为image，通过a链接跳转
+```
+let url = canvas.toDataURL("image/png")
+let a = document.createElement('a')
+document.body.appendChild(a)
+a.href = url
+a.download = "我的作品"
+a.target = '_blank'
+a.click()
+```
