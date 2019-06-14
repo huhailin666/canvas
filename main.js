@@ -9,32 +9,46 @@ var useEraser = false;
 var useRect = false;
 var rectFlag = false;
 var useCircle = false;
-var circleFlag=false;
-var useLine=false;
-var lineFlag=false;
+var circleFlag = false;
+var useLine = false;
+var lineFlag = false;
 
 var canvasImageData = [];
 var lineWidth = 4
 var lineColor = "black"
 resize()
-canvasImageData[0]=ctx.getImageData(0, 0, yyy.width, yyy.height)
+canvasImageData[0] = ctx.getImageData(0, 0, yyy.width, yyy.height)
 
-window.canvasImageData=canvasImageData
+window.canvasImageData = canvasImageData
 
-line.onclick=function(e){
-  useLine=true;
+box.onclick = function () {
+  console.log('xx')
+  if (box.children[0].children[0].getAttribute('xlink:href') === '#icon-left') {
+    container.style.display = "none";
+    box.children[0].children[0].setAttribute('xlink:href', '#icon-right')
+  } else {
+    container.style.display = "grid";
+    box.children[0].children[0].setAttribute('xlink:href', '#icon-left')
+  }
+
+}
+
+line.onclick = function (e) {
+  useLine = true;
   useCircle = false;
   useRect = false;
-  useEraser=false;
+  useEraser = false;
+  eraser.classList.remove('active')
   line.classList.add('active')
   circle.classList.remove('active')
   rect.classList.remove('active')
 }
-circle.onclick=function(){
+circle.onclick = function () {
   useCircle = true;
   useRect = false;
-  useEraser=false;
-  useLine=false;
+  useEraser = false;
+  useLine = false;
+  eraser.classList.remove('active')
   circle.classList.add('active')
   line.classList.remove('active')
   rect.classList.remove('active')
@@ -42,9 +56,10 @@ circle.onclick=function(){
 
 rect.onclick = function () {
   useRect = true;
-  useCircle=false;
-  useEraser=false;
-  useLine=false;
+  useCircle = false;
+  useEraser = false;
+  useLine = false;
+  eraser.classList.remove('active')
   circle.classList.remove('active')
   line.classList.remove('active')
   rect.classList.add('active')
@@ -61,7 +76,7 @@ chexiao.onclick = function (e) {
     ctx.clearRect(0, 0, yyy.width, yyy.height);
     canvasImageData = []
     e.target.classList.add('ban');
-    canvasImageData[0]=ctx.getImageData(0, 0, yyy.width, yyy.height)
+    canvasImageData[0] = ctx.getImageData(0, 0, yyy.width, yyy.height)
   }
 
 
@@ -74,7 +89,7 @@ laji.onclick = function () {
 
 container.onclick = function (e) {
   lineColor = e.target.id;
-  ctx.strokeStyle=lineColor;
+  ctx.strokeStyle = lineColor;
 
 }
 
@@ -82,46 +97,55 @@ container.onclick = function (e) {
 
 pencil.onclick = function () {
   useEraser = false;
-  useRect=false;
-  useCircle=false;
-  useLine=false;
+  useRect = false;
+  useCircle = false;
+  useLine = false;
   lineWidth = 5
   pencil.classList.add('active')
   pen.classList.remove('active')
   shuazi.classList.remove('active')
   eraser.classList.remove('active')
 
+  rect.classList.remove('active')
+  circle.classList.remove('active')
+  line.classList.remove('active')
 }
 pen.onclick = function () {
   useEraser = false;
-  useRect=false;
-  useCircle=false;
-  useLine=false;
+  useRect = false;
+  useCircle = false;
+  useLine = false;
 
   lineWidth = 9
   pencil.classList.remove('active')
   shuazi.classList.remove('active')
   pen.classList.add('active')
   eraser.classList.remove('active')
+  rect.classList.remove('active')
+  circle.classList.remove('active')
+  line.classList.remove('active')
 
 }
 shuazi.onclick = function () {
   useEraser = false;
-  useRect=false;
-  useCircle=false;
-  useLine=false;
+  useRect = false;
+  useCircle = false;
+  useLine = false;
 
   lineWidth = 13
   pencil.classList.remove('active')
   pen.classList.remove('active')
   shuazi.classList.add('active')
   eraser.classList.remove('active')
+  rect.classList.remove('active')
+  circle.classList.remove('active')
+  line.classList.remove('active')
 }
 eraser.onclick = function () {
   useEraser = true;
-  useRect=false;
-  useCircle=false;
-  useLine=false;
+  useRect = false;
+  useCircle = false;
+  useLine = false;
 
   rect.classList.remove('active')
   circle.classList.remove('active')
@@ -166,19 +190,16 @@ function mouseEvent() {
     let x = e.clientX - canvasX;
     let y = e.clientY - canvasY;
     startPoint = { x: x, y: y }
-    if(useLine){
-      lineFlag=true;
-      console.log('useLine')
+    if (useLine) {
+      lineFlag = true;
       return;
     }
     if (useCircle) {
       circleFlag = true;
-      console.log('useCircle')
       return;
     }
     if (useRect) {
       rectFlag = true;
-      console.log('useRect')
       return;
     }
     if (useEraser) {
@@ -192,36 +213,31 @@ function mouseEvent() {
   yyy.onmousemove = function (e) {
     let x = e.clientX - canvasX;
     let y = e.clientY - canvasY;
-    if(useLine&&lineFlag){
-      console.log('正在画直线')
-      ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
+    if (useLine && lineFlag) {
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
       ctx.beginPath()
-
-      ctx.moveTo(startPoint.x,startPoint.y);
-      ctx.lineTo(x,y)
+      ctx.moveTo(startPoint.x, startPoint.y);
+      ctx.lineTo(x, y)
       ctx.stroke()
       return;
 
     }
     if (useCircle && circleFlag) {
-      let radius=  Math.sqrt(Math.pow(x-startPoint.x,2)+Math.pow(y-startPoint.y,2))
-      ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
+      let radius = Math.sqrt(Math.pow(x - startPoint.x, 2) + Math.pow(y - startPoint.y, 2))
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
       ctx.beginPath()
-
-      ctx.arc(startPoint.x, startPoint.y,radius, 0, Math.PI*2)
-
+      ctx.arc(startPoint.x, startPoint.y, radius, 0, Math.PI * 2)
       ctx.stroke()
       return;
     }
     if (useRect && rectFlag) {
-      ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
       ctx.beginPath()
-
       ctx.strokeRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y)
       return;
     }
     if (useEraser && eraserFlag) {
-      ctx.clearRect(x - 14, y - 14 ,lineWidth + 28, lineWidth + 28)
+      ctx.clearRect(x - 14, y - 14, lineWidth + 28, lineWidth + 28)
       return;
     }
     if (paintFlag) {
@@ -237,36 +253,33 @@ function mouseEvent() {
     if (useLine && lineFlag) {
       let x = e.clientX - canvasX;
       let y = e.clientY - canvasY;
-      console.log('完成画圆直线')
-      let length=canvasImageData.length
-      ctx.putImageData(canvasImageData[length -1], 0, 0);
-      ctx.moveTo(startPoint.x,startPoint.y);
-      ctx.lineTo(x,y);
+      let length = canvasImageData.length
+      ctx.putImageData(canvasImageData[length - 1], 0, 0);
+      ctx.moveTo(startPoint.x, startPoint.y);
+      ctx.lineTo(x, y);
       ctx.stroke()
     }
     if (useCircle && circleFlag) {
       let x = e.clientX - canvasX;
       let y = e.clientY - canvasY;
-      console.log('完成画圆形')
-      let radius=  Math.sqrt(Math.pow(x-startPoint.x,2)+Math.pow(y-startPoint.y,2))
-      ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
+      let radius = Math.sqrt(Math.pow(x - startPoint.x, 2) + Math.pow(y - startPoint.y, 2))
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
       ctx.beginPath()
-      ctx.arc(startPoint.x, startPoint.y,radius, 0, Math.PI*2)
+      ctx.arc(startPoint.x, startPoint.y, radius, 0, Math.PI * 2)
       ctx.stroke()
     }
-    if(useRect && rectFlag){
+    if (useRect && rectFlag) {
       let x = e.clientX - canvasX;
       let y = e.clientY - canvasY;
-      console.log('完成画矩形')
-      ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
       ctx.strokeRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y);
     }
-    
+
     canvasImageData.push(ctx.getImageData(0, 0, yyy.width, yyy.height))
     chexiao.classList.remove('ban')
 
-    lineFlag=false;
-    circleFlag=false;
+    lineFlag = false;
+    circleFlag = false;
     rectFlag = false;
     paintFlag = false;
     eraserFlag = false;
@@ -275,33 +288,100 @@ function mouseEvent() {
 
 
 function touchEvent() {
+  let startPoint = {};
+  let endPoint = {};
   yyy.ontouchstart = function (e) {
     let x = e.touches[0].clientX - canvasX;
     let y = e.touches[0].clientY - canvasY;
+    startPoint = { x: x, y: y }
+    if (useLine) {
+      lineFlag = true;
+      return;
+    }
+    if (useCircle) {
+      circleFlag = true;
+      return;
+    }
+    if (useRect) {
+      rectFlag = true;
+      return;
+    }
     if (useEraser) {
       eraserFlag = true;
       ctx.clearRect(x - lineWidth / 2 - 5, y - lineWidth / 2 - 5, lineWidth + 10, lineWidth + 10)
       return;
     }
     paintFlag = true;
-    // drawCircle(x, y, "blue")
-    startPoint = { x: x, y: y }
-    console.log(startPoint.x, startPoint.y)
   }
   yyy.ontouchmove = function (e) {
     let x = e.touches[0].clientX - canvasX;
     let y = e.touches[0].clientY - canvasY;
-    if (useEraser && eraserFlag) {
-      ctx.clearRect(x - lineWidth / 2 - 5, y - lineWidth / 2 - 5, lineWidth + 10, lineWidth + 10)
+    if (useLine && lineFlag) {
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
+      ctx.beginPath()
+      ctx.moveTo(startPoint.x, startPoint.y);
+      ctx.lineTo(x, y)
+      ctx.stroke()
+      return;
+
+    }
+    if (useCircle && circleFlag) {
+      let radius = Math.sqrt(Math.pow(x - startPoint.x, 2) + Math.pow(y - startPoint.y, 2))
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
+      ctx.beginPath()
+      ctx.arc(startPoint.x, startPoint.y, radius, 0, Math.PI * 2)
+      ctx.stroke()
       return;
     }
-    if (!paintFlag) return;
-    drawCircle(x, y);
-    endPoint = { x: x, y: y }
-    drawLine(startPoint.x, startPoint.y, x, y);
-    startPoint = endPoint;
+    if (useRect && rectFlag) {
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
+      ctx.beginPath()
+      ctx.strokeRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y)
+      return;
+    }
+    if (useEraser && eraserFlag) {
+      ctx.clearRect(x - 14, y - 14, lineWidth + 28, lineWidth + 28)
+      return;
+    }
+    if (paintFlag) {
+      drawCircle(x, y);
+      endPoint = { x: x, y: y }
+      drawLine(startPoint.x, startPoint.y, x, y);
+      startPoint = endPoint;
+    }
   }
   yyy.ontouchend = function (e) {
+    if (useLine && lineFlag) {
+      let x = e.clientX - canvasX;
+      let y = e.clientY - canvasY;
+      let length = canvasImageData.length
+      ctx.putImageData(canvasImageData[length - 1], 0, 0);
+      ctx.moveTo(startPoint.x, startPoint.y);
+      ctx.lineTo(x, y);
+      ctx.stroke()
+    }
+    if (useCircle && circleFlag) {
+      let x = e.clientX - canvasX;
+      let y = e.clientY - canvasY;
+      let radius = Math.sqrt(Math.pow(x - startPoint.x, 2) + Math.pow(y - startPoint.y, 2))
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
+      ctx.beginPath()
+      ctx.arc(startPoint.x, startPoint.y, radius, 0, Math.PI * 2)
+      ctx.stroke()
+    }
+    if (useRect && rectFlag) {
+      let x = e.clientX - canvasX;
+      let y = e.clientY - canvasY;
+      ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
+      ctx.strokeRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y);
+    }
+
+    canvasImageData.push(ctx.getImageData(0, 0, yyy.width, yyy.height))
+    chexiao.classList.remove('ban')
+
+    lineFlag = false;
+    circleFlag = false;
+    rectFlag = false;
     paintFlag = false;
     eraserFlag = false;
   }

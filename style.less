@@ -30,8 +30,8 @@ body {
       margin : 5px;
       padding: 6px;
     }
-    #rect{
-      margin-right: 50px;
+    #eraser{
+      margin-left: 50px;
     }
 
     .active {
@@ -47,17 +47,31 @@ body {
   }
 
   #color {
+    padding-left: 7px;
+    padding-bottom: 4px;
+    height:250px;
+    border-radius: 16px;
     cursor: pointer;
-
+    display:flex;
     position: fixed;
     left    : 10px;
     top     : 20%;
+    align-items: center;
+    background: rgba(100,100,100,0.3);
+    #box {
+      vertical-align: center;
+      svg{
+        width:20px;
+        height:20px;
+      }
+    }
     #container {
       display              : grid;
       grid-template-columns: 20px 20px;
       grid-template-rows   : repeat(6, 20px);
       grid-gap: 20px;
       transition           : all 0.3s;
+      margin-right: 10px;
       li {
         width        : 25px;
         height       : 25px;
