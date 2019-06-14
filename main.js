@@ -1,7 +1,6 @@
 import './style.less'
 var yyy = document.getElementById('xxx');
 var ctx = yyy.getContext('2d');
-window.ctx = ctx
 var canvasX = yyy.offsetLeft;
 var canvasY = yyy.offsetTop;
 var paintFlag = false;
@@ -9,18 +8,25 @@ var eraserFlag = false;
 var useEraser = false;
 var useRect = false;
 var rectFlag = false;
-
+var useCircle = false;
+var circleFlag=false;
 
 
 var canvasImageData = [];
 var lineWidth = 4
 var lineColor = "black"
 
-// var blue=document.querySelector('#blue')
-rect.onclick = function () {
-  console.log('xx')
-  useRect = true;
+canvasImageData.push(ctx.getImageData(0, 0, yyy.width, yyy.height))
+circle.onclick=function(){
+  useCircle = true;
+  useRect = false;
+  useEraser=false;
+}
 
+rect.onclick = function () {
+  useRect = true;
+  useCircle=false;
+  useEraser=false;
 }
 chexiao.onclick = function (e) {
   let length = canvasImageData.length;
@@ -32,8 +38,12 @@ chexiao.onclick = function (e) {
   } else {
     ctx.clearRect(0, 0, yyy.width, yyy.height);
     canvasImageData = []
-    e.target.classList.add('ban')
+    e.target.classList.add('ban');
+    canvasImageData[0]=ctx.getImageData(0, 0, yyy.width, yyy.height)
+
   }
+
+
 }
 laji.onclick = function () {
   ctx.clearRect(0, 0, yyy.width, yyy.height)
@@ -52,6 +62,7 @@ container.onclick = function (e) {
 pencil.onclick = function () {
   useEraser = false;
   useRect=false;
+  useCircle=false;
   lineWidth = 5
   pencil.classList.add('active')
   pen.classList.remove('active')
@@ -62,6 +73,7 @@ pencil.onclick = function () {
 pen.onclick = function () {
   useEraser = false;
   useRect=false;
+  useCircle=false;
 
   lineWidth = 9
   pencil.classList.remove('active')
@@ -73,6 +85,7 @@ pen.onclick = function () {
 shuazi.onclick = function () {
   useEraser = false;
   useRect=false;
+  useCircle=false;
 
   lineWidth = 13
   pencil.classList.remove('active')
@@ -83,6 +96,8 @@ shuazi.onclick = function () {
 eraser.onclick = function () {
   useEraser = true;
   useRect=false;
+  useCircle=false;
+
   pencil.classList.remove('active')
   pen.classList.remove('active')
   shuazi.classList.remove('active')
@@ -106,7 +121,6 @@ if (document.body.ontouchmove === undefined) {
 
 
 download.onclick = function () {
-  console.log('xxx')
   let url = yyy.toDataURL("image/png")
   let a = document.createElement('a')
   document.body.appendChild(a)
@@ -123,6 +137,11 @@ function mouseEvent() {
     let x = e.clientX - canvasX;
     let y = e.clientY - canvasY;
     startPoint = { x: x, y: y }
+    if (useCircle) {
+      circleFlag = true;
+      console.log('useCircle')
+      return;
+    }
     if (useRect) {
       rectFlag = true;
       console.log('useRect')
@@ -135,13 +154,19 @@ function mouseEvent() {
     }
     paintFlag = true;
 
-    // drawCircle(x, y, lineWidth / 2)
   }
   yyy.onmousemove = function (e) {
     let x = e.clientX - canvasX;
     let y = e.clientY - canvasY;
+    if (useCircle && circleFlag) {
+      let radius=  Math.sqrt(Math.pow(x-startPoint.x,2)+Math.pow(y-startPoint.y,2))
+      ctx.beginPath()
+      ctx.arc(startPoint.x, startPoint.y,radius, 0, Math.PI*2)
+      ctx.clearRect(startPoint.x-radius-5, startPoint.y-radius-5, 2*radius+10, 2*radius+10)
+      ctx.stroke()
+      return;
+    }
     if (useRect && rectFlag) {
-      // rectCanvasDate.push(ctx.getImageData(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y))
       ctx.clearRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y)
       ctx.strokeRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y)
       return;
@@ -159,7 +184,15 @@ function mouseEvent() {
   }
 
   yyy.onmouseup = function (e) {
-
+    if (useCircle && circleFlag) {
+      let x = e.clientX - canvasX;
+      let y = e.clientY - canvasY;
+      console.log('完成画圆形')
+      let radius=  Math.sqrt(Math.pow(x-startPoint.x,2)+Math.pow(y-startPoint.y,2))
+      ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
+      ctx.arc(startPoint.x, startPoint.y,radius, 0, Math.PI*2)
+      ctx.stroke()
+    }
     if(useRect && rectFlag){
       let x = e.clientX - canvasX;
       let y = e.clientY - canvasY;
@@ -167,9 +200,11 @@ function mouseEvent() {
       ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
       ctx.strokeRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y);
     }
+    
     canvasImageData.push(ctx.getImageData(0, 0, yyy.width, yyy.height))
     chexiao.classList.remove('ban')
 
+    circleFlag=false;
     rectFlag = false;
     paintFlag = false;
     eraserFlag = false;
