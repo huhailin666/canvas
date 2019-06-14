@@ -20,19 +20,24 @@ resize()
 canvasImageData[0]=ctx.getImageData(0, 0, yyy.width, yyy.height)
 
 window.canvasImageData=canvasImageData
-console.log(canvasImageData)
-line.onclick=function(){
+
+line.onclick=function(e){
   useLine=true;
   useCircle = false;
   useRect = false;
   useEraser=false;
+  line.classList.add('active')
+  circle.classList.remove('active')
+  rect.classList.remove('active')
 }
 circle.onclick=function(){
   useCircle = true;
   useRect = false;
   useEraser=false;
   useLine=false;
-
+  circle.classList.add('active')
+  line.classList.remove('active')
+  rect.classList.remove('active')
 }
 
 rect.onclick = function () {
@@ -40,6 +45,9 @@ rect.onclick = function () {
   useCircle=false;
   useEraser=false;
   useLine=false;
+  circle.classList.remove('active')
+  line.classList.remove('active')
+  rect.classList.add('active')
 }
 
 chexiao.onclick = function (e) {
@@ -114,6 +122,10 @@ eraser.onclick = function () {
   useRect=false;
   useCircle=false;
   useLine=false;
+
+  rect.classList.remove('active')
+  circle.classList.remove('active')
+  line.classList.remove('active')
 
   pencil.classList.remove('active')
   pen.classList.remove('active')
@@ -197,7 +209,6 @@ function mouseEvent() {
       ctx.beginPath()
 
       ctx.arc(startPoint.x, startPoint.y,radius, 0, Math.PI*2)
-      // ctx.clearRect(startPoint.x-radius-5, startPoint.y-radius-5, 2*radius+10, 2*radius+10)
 
       ctx.stroke()
       return;
@@ -206,13 +217,11 @@ function mouseEvent() {
       ctx.putImageData(canvasImageData[canvasImageData.length -1], 0, 0);
       ctx.beginPath()
 
-      // ctx.clearRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y)
       ctx.strokeRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y)
       return;
     }
     if (useEraser && eraserFlag) {
-      ctx.clearRect(x - lineWidth / 2 - 5, y - lineWidth / 2 - 5, lineWidth + 10, lineWidth + 10)
-
+      ctx.clearRect(x - 14, y - 14 ,lineWidth + 28, lineWidth + 28)
       return;
     }
     if (paintFlag) {
@@ -262,7 +271,6 @@ function mouseEvent() {
     paintFlag = false;
     eraserFlag = false;
   }
-
 }
 
 
