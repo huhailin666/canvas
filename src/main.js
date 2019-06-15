@@ -204,7 +204,7 @@ function mouseEvent() {
     }
     if (useEraser) {
       eraserFlag = true;
-      ctx.clearRect(x - lineWidth / 2 - 5, y - lineWidth / 2 - 5, lineWidth + 10, lineWidth + 10)
+      ctx.clearRect(x - 14, y - 14, lineWidth + 28, lineWidth + 28)
       return;
     }
     paintFlag = true;
@@ -351,9 +351,9 @@ function touchEvent() {
     }
   }
   yyy.ontouchend = function (e) {
+    let x = e.touches[0].clientX - canvasX;
+    let y = e.touches[0].clientY - canvasY;
     if (useLine && lineFlag) {
-      let x = e.clientX - canvasX;
-      let y = e.clientY - canvasY;
       let length = canvasImageData.length
       ctx.putImageData(canvasImageData[length - 1], 0, 0);
       ctx.moveTo(startPoint.x, startPoint.y);
@@ -361,8 +361,6 @@ function touchEvent() {
       ctx.stroke()
     }
     if (useCircle && circleFlag) {
-      let x = e.clientX - canvasX;
-      let y = e.clientY - canvasY;
       let radius = Math.sqrt(Math.pow(x - startPoint.x, 2) + Math.pow(y - startPoint.y, 2))
       ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
       ctx.beginPath()
@@ -370,12 +368,9 @@ function touchEvent() {
       ctx.stroke()
     }
     if (useRect && rectFlag) {
-      let x = e.clientX - canvasX;
-      let y = e.clientY - canvasY;
       ctx.putImageData(canvasImageData[canvasImageData.length - 1], 0, 0);
       ctx.strokeRect(startPoint.x, startPoint.y, x - startPoint.x, y - startPoint.y);
     }
-
     canvasImageData.push(ctx.getImageData(0, 0, yyy.width, yyy.height))
     chexiao.classList.remove('ban')
 
