@@ -22,7 +22,6 @@ canvasImageData[0] = ctx.getImageData(0, 0, yyy.width, yyy.height)
 window.canvasImageData = canvasImageData
 
 box.onclick = function () {
-  console.log('xx')
   if (box.children[0].children[0].getAttribute('xlink:href') === '#icon-left') {
     container.style.display = "none";
     box.children[0].children[0].setAttribute('xlink:href', '#icon-right')
@@ -68,9 +67,7 @@ rect.onclick = function () {
 chexiao.onclick = function (e) {
   let length = canvasImageData.length;
   if (length > 1) {
-    console.log('可撤销')
     ctx.putImageData(canvasImageData[length - 2], 0, 0);
-    console.log(canvasImageData)
     canvasImageData.pop()
   } else {
     ctx.clearRect(0, 0, yyy.width, yyy.height);

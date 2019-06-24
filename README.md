@@ -83,3 +83,12 @@ a.download = "我的作品"
 a.target = '_blank'
 a.click()
 ```
+### 7.判断是移动端还是 PC 端的方法
+查看 页面上是否存在 ontouchmove 这个属性，如果存在，就调用 mouseEvent() ,否则调用 touchEvent()
+```
+if (document.body.ontouchmove === undefined) { 
+  mouseEvent()
+} else {
+  touchEvent()
+}
+```
