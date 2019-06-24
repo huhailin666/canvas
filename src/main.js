@@ -81,13 +81,13 @@ chexiao.onclick = function (e) {
 laji.onclick = function () {
   ctx.clearRect(0, 0, yyy.width, yyy.height)
   canvasImageData = [];
-  chexiao.classList.add('ban')
+  chexiao.classList.add('ban');
+  canvasImageData[0] = ctx.getImageData(0, 0, yyy.width, yyy.height)
 }
 
 container.onclick = function (e) {
   lineColor = e.target.id;
   ctx.strokeStyle = lineColor;
-
 }
 
 
